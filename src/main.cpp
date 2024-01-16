@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include "Renderer.hpp"
-#include <iostream>
 
 int main()
 {
@@ -24,17 +23,17 @@ int main()
 
         // example triangles
         // TODO(me): read actual files
-        std::vector<cpp_renderer::Triangle> triangles(2);
-        triangles[0].points[0][0] = 100;
-        triangles[0].points[0][1] = 150;
+        std::vector<cpp_renderer::Triangle> triangles(1);
+        triangles[0].points[0][0] = 120;
+        triangles[0].points[0][1] = 10;
         triangles[0].points[0][2] = 0;
-        triangles[0].points[1][0] = 200;
-        triangles[0].points[1][1] = 250;
+        triangles[0].points[1][0] = 180;
+        triangles[0].points[1][1] = 210;
         triangles[0].points[1][2] = 0;
-        triangles[0].points[2][0] = 200;
-        triangles[0].points[2][1] = 150;
+        triangles[0].points[2][0] = 150;
+        triangles[0].points[2][1] = 300;
         triangles[0].points[2][2] = 0;
-        
+        /*
         triangles[1].points[0][0] = 300;
         triangles[1].points[0][1] = 130;
         triangles[1].points[0][2] = 0;
@@ -44,18 +43,13 @@ int main()
         triangles[1].points[2][0] = 500;
         triangles[1].points[2][1] = 120;
         triangles[1].points[2][2] = 0;
-
-        // tests
-        std::cout << "test" << std::endl;
-        auto b = my_tmp::getBounds(triangles[0]);
-        
-
+        */
         // actual renderer call
         auto renderer = cpp_renderer::Renderer();
         auto frame = renderer.render(triangles, win_size.x, win_size.y);
 
         auto image = sf::Image();
-        image.create(win_size.x, win_size.y, reinterpret_cast<const sf::Uint8*>(frame.getData().data()));
+        image.create(win_size.x, win_size.y, reinterpret_cast<const sf::Uint8 *>(frame.getData().data()));
 
         auto texture = sf::Texture();
         texture.loadFromImage(image);

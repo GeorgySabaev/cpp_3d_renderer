@@ -3,7 +3,8 @@
 
 namespace cpp_renderer
 {
-    struct Triangle{
+    struct Triangle
+    {
     public:
         Vector3 points[3];
     };
