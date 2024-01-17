@@ -25,24 +25,24 @@ int main()
         // TODO(me): read actual files
         std::vector<cpp_renderer::Triangle> triangles(2);
         triangles[0].points[0][0] = 120;
-        triangles[0].points[0][1] = 10;
-        triangles[0].points[0][2] = 0;
-        triangles[0].points[1][0] = 180;
-        triangles[0].points[1][1] = 210;
-        triangles[0].points[1][2] = 0;
-        triangles[0].points[2][0] = 150;
-        triangles[0].points[2][1] = 300;
-        triangles[0].points[2][2] = 0;
+        triangles[0].points[0][1] = 50;
+        triangles[0].points[0][2] = 0.4;
+        triangles[0].points[1][0] = 150;
+        triangles[0].points[1][1] = 300;
+        triangles[0].points[1][2] = 1;
+        triangles[0].points[2][0] = 230;
+        triangles[0].points[2][1] = 210;
+        triangles[0].points[2][2] = 2.5;
         
-        triangles[1].points[0][0] = 300;
-        triangles[1].points[0][1] = 130;
-        triangles[1].points[0][2] = 0;
-        triangles[1].points[1][0] = 500;
+        triangles[1].points[0][0] = 100;
+        triangles[1].points[0][1] = 180;
+        triangles[1].points[0][2] = 1.8;
+        triangles[1].points[1][0] = 300;
         triangles[1].points[1][1] = 250;
-        triangles[1].points[1][2] = 0;
-        triangles[1].points[2][0] = 500;
+        triangles[1].points[1][2] = 1.5;
+        triangles[1].points[2][0] = 300;
         triangles[1].points[2][1] = 120;
-        triangles[1].points[2][2] = 0;
+        triangles[1].points[2][2] = 0.15;
         
         // actual renderer call
         auto renderer = cpp_renderer::Renderer();

@@ -52,3 +52,13 @@ std::optional<Eigen::Vector2f> cpp_renderer::DisplayUtils::getUV(unsigned int x,
     }
     return std::nullopt;
 }
+
+float cpp_renderer::DisplayUtils::getDepth(Eigen::Vector2f uv, Triangle triangle)
+{   
+    auto pivot = triangle.points[0];
+    Eigen::Matrix<float, 3, 2> uv_space;
+    uv_space.col(0) = triangle.points[1] - pivot;
+    uv_space.col(1) = triangle.points[2] - pivot;
+    
+    return (uv_space*uv).z() + pivot.z();
+}
