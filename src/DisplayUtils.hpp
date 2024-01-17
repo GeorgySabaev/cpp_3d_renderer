@@ -1,6 +1,7 @@
 #pragma once
 #include "IntRect.hpp"
 #include "Triangle.hpp"
+#include <optional>
 
 namespace cpp_renderer
 {
@@ -10,8 +11,7 @@ namespace cpp_renderer
         static IntRect getBounds(const Triangle &polygon);
 
         static bool checkIfVisible(Triangle triangle);
-
-        static bool checkIfVisible(unsigned int x, unsigned int y, Triangle triangle);
-        static bool checkIfInTriangle(unsigned int x, unsigned int y, Triangle triangle);
+        
+        static std::optional<Eigen::Vector2f> getUV(unsigned int x, unsigned int y, Triangle triangle);
     };
 }

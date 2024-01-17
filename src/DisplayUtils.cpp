@@ -1,6 +1,5 @@
 #include "DisplayUtils.hpp"
 #include <utility>
-#include "LinAlg.hpp"
 #include <cassert>
 
 cpp_renderer::IntRect cpp_renderer::DisplayUtils::getBounds(const Triangle &polygon)
@@ -29,26 +28,27 @@ cpp_renderer::IntRect cpp_renderer::DisplayUtils::getBounds(const Triangle &poly
 
 bool cpp_renderer::DisplayUtils::checkIfVisible(Triangle triangle)
 {
-    auto pivot = triangle.points[0].strip_z();
-    auto b = triangle.points[1].strip_z() - pivot;
-    auto c = triangle.points[2].strip_z() - pivot;
-    auto l_perpendicular = Vector3(-b.y(), b.x(), 0);
-    return LinAlg::dot(b, c) > 0;
+    auto pivot = triangle.points[0].head<2>();
+    auto b = triangle.points[1].head<2>() - pivot;
+    auto c = triangle.points[2].head<2>() - pivot;
+    auto l_perpendicular = Eigen::Vector2f(-c.y(), c.x());
+    return b.dot(l_perpendicular) > 0;
 }
 
-bool cpp_renderer::DisplayUtils::checkIfInTriangle(unsigned int x, unsigned int y, Triangle triangle)
+
+std::optional<Eigen::Vector2f> cpp_renderer::DisplayUtils::getUV(unsigned int x, unsigned int y, Triangle triangle)
 {
     assert(checkIfVisible(triangle));
-    for (size_t i = 0; i < 3; i++)
-    {
-        auto pivot = triangle.points[i].strip_z();
-        auto point = Vector3(x, y, 0) - pivot;
-        auto side = triangle.points[(i + 1) % 3].strip_z() - pivot;
-        auto l_perpendicular = Vector3(-side.y(), side.x(), 0);
-        if (LinAlg::dot(point, l_perpendicular) <= 0)
-        {
-            return false;
-        }
+
+    auto pivot = triangle.points[0].head<2>();
+    Eigen::Matrix2f uv_space;
+    uv_space.col(0) = triangle.points[1].head<2>() - pivot;
+    uv_space.col(1) = triangle.points[2].head<2>() - pivot;
+    auto point = (Eigen::Vector2f(x, y) - pivot).eval();
+    
+    auto uv = uv_space.colPivHouseholderQr().solve(point);
+    if(uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1){
+        return uv;
     }
-    return true;
+    return std::nullopt;
 }

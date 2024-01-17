@@ -1,11 +1,11 @@
 #pragma once
-#include "Vector3.hpp"
+#include <Eigen/Dense>
 
 namespace cpp_renderer
 {
     struct Triangle
     {
     public:
-        Vector3 points[3];
+        Eigen::Vector3f points[3];
     };
 }

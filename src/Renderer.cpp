@@ -18,8 +18,10 @@ cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Trian
         {
             for (auto y = bounds.up; y < bounds.down; ++y)
             {
-                if(DisplayUtils::checkIfInTriangle(x, y, polygon)){
-                    frame.setPixel(x, y, RGBA32Pixel{0xFF,0xFF,0xFF,0xFF});
+                auto uv = DisplayUtils::getUV(x, y, polygon);
+                if(uv.has_value()){
+                    // frame.setPixel(x, y, RGBA32Pixel{0xFF,0x10,0x50,0xFF});
+                    frame.setPixel(x, y, RGBA32Pixel{static_cast<uint8_t>(uv.value().x() * 200),static_cast<uint8_t>(uv.value().y() * 200),0x00,0xFF});
                 }
             }
         }
