@@ -26,15 +26,25 @@ cpp_renderer::IntRect cpp_renderer::DisplayUtils::getBounds(const Triangle &poly
     return bounds;
 }
 
+cpp_renderer::IntRect cpp_renderer::DisplayUtils::clipToScreen(cpp_renderer::IntRect bounds, int width, int height)
+{
+    bounds.left = std::max(bounds.left, 0);
+    bounds.right = std::min(bounds.right, width);
+    bounds.up = std::max(bounds.up, 0);
+    bounds.down = std::min(bounds.down, height);
+
+    return bounds;
+}
+
 bool cpp_renderer::DisplayUtils::checkIfVisible(Triangle triangle)
 {
     auto pivot = triangle.points[0].head<2>();
     auto b = triangle.points[1].head<2>() - pivot;
     auto c = triangle.points[2].head<2>() - pivot;
     auto l_perpendicular = Eigen::Vector2f(-c.y(), c.x());
+
     return b.dot(l_perpendicular) > 0;
 }
-
 
 std::optional<Eigen::Vector2f> cpp_renderer::DisplayUtils::getUV(unsigned int x, unsigned int y, Triangle triangle)
 {
@@ -45,20 +55,12 @@ std::optional<Eigen::Vector2f> cpp_renderer::DisplayUtils::getUV(unsigned int x,
     uv_space.col(0) = triangle.points[1].head<2>() - pivot;
     uv_space.col(1) = triangle.points[2].head<2>() - pivot;
     auto point = (Eigen::Vector2f(x, y) - pivot).eval();
-    
+
     auto uv = uv_space.colPivHouseholderQr().solve(point);
-    if(uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1){
+    if (uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1)
+    {
         return uv;
     }
-    return std::nullopt;
-}
 
-float cpp_renderer::DisplayUtils::getDepth(Eigen::Vector2f uv, Triangle triangle)
-{   
-    auto pivot = triangle.points[0];
-    Eigen::Matrix<float, 3, 2> uv_space;
-    uv_space.col(0) = triangle.points[1] - pivot;
-    uv_space.col(1) = triangle.points[2] - pivot;
-    
-    return (uv_space*uv).z() + pivot.z();
+    return std::nullopt;
 }
