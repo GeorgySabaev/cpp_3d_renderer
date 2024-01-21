@@ -1,17 +1,27 @@
 #include "Renderer.hpp"
 #include "DisplayUtils.hpp"
 
-cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Triangle> &polygons, unsigned int width, unsigned int height) const
+cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Triangle> &polygons, unsigned int width, unsigned int height, const Camera &camera) const
 { // TODO(potentially): separate rendering passes into submethods if they start growing out of control
+
+    auto projected_polygons = polygons;
+
+    for (auto &polygon : projected_polygons)
+    {
+        for (auto &point : polygon.points)
+        {
+            point = camera.transform(point);
+        }
+    }
 
     // geometry pass
     auto depth_buffer = std::vector<std::vector<float>>(width, std::vector<float>(height, NAN));
     auto uv_buffer = std::vector<std::vector<Eigen::Vector2f>>(width, std::vector<Eigen::Vector2f>(height));
     auto poly_id_buffer = std::vector<std::vector<size_t>>(width, std::vector<size_t>(height, 0));
 
-    for (size_t poly_id = 0; poly_id < polygons.size(); poly_id++)
+    for (size_t poly_id = 0; poly_id < projected_polygons.size(); poly_id++)
     {
-        const auto &polygon = polygons[poly_id];
+        const auto &polygon = projected_polygons[poly_id];
         if (!DisplayUtils::checkIfVisible(polygon))
         {
             continue;
@@ -44,14 +54,15 @@ cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Trian
     {
         for (auto y = 0; y < height; ++y)
         {
-            if (NAN == depth_buffer[x][y])
+            if (std::isnan(depth_buffer[x][y]))
             { // no object at (x, y)
                 continue;
             }
             // TODO(me): proper color later
-            uint8_t lightness = (1 / (exp(depth_buffer[x][y]))) * 0xff;
+            uint8_t lightness = (1 / (exp(polygons[poly_id_buffer[x][y]].GetSurfacePoint(uv_buffer[x][y]).norm() / 5))) * 0xff;
             frame.setPixel(x, y, RGBA32Pixel{lightness, lightness, lightness, 0xFF});
         }
     }
+
     return frame;
 }
