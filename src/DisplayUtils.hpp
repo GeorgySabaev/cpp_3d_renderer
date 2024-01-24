@@ -10,7 +10,7 @@ namespace cpp_renderer
     public:
         static IntRect getBounds(const Triangle &polygon);
 
-        cpp_renderer::IntRect clipToScreen(cpp_renderer::IntRect bounds, int width, int height);
+        static cpp_renderer::IntRect clipToScreen(cpp_renderer::IntRect bounds, int width, int height);
 
         static bool checkIfVisible(Triangle triangle);
 

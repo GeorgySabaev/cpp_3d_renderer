@@ -26,7 +26,7 @@ cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Trian
         {
             continue;
         }
-        auto bounds = DisplayUtils::getBounds(polygon);
+        auto bounds = DisplayUtils::clipToScreen(DisplayUtils::getBounds(polygon), width, height);
 
         for (auto x = bounds.left; x < bounds.right; ++x)
         {
@@ -59,7 +59,8 @@ cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Trian
                 continue;
             }
             // TODO(me): proper color later
-            uint8_t lightness = (1 / (exp(polygons[poly_id_buffer[x][y]].GetSurfacePoint(uv_buffer[x][y]).norm() / 5))) * 0xff;
+            uint8_t lightness = 0xff * std::pow((1 + depth_buffer[x][y]) / 2, 3);
+            // uint8_t lightness = (1 / (exp(polygons[poly_id_buffer[x][y]].GetSurfacePoint(uv_buffer[x][y]).norm() / 5))) * 0xff;
             frame.setPixel(x, y, RGBA32Pixel{lightness, lightness, lightness, 0xFF});
         }
     }
