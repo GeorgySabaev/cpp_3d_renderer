@@ -7,5 +7,5 @@ find_package(Eigen3 REQUIRED)
 
 include_directories(${Eigen3_INCLUDE_DIR})
 
-add_executable(${PROJECT_NAME} main.cpp Renderer.cpp RGBA32Image.cpp DisplayUtils.cpp)
+add_executable(${PROJECT_NAME} main.cpp Renderer.cpp RGBA32Image.cpp DisplayUtils.cpp Triangle.cpp Camera.cpp ShapeBuilder.cpp)
 target_link_libraries(${PROJECT_NAME} sfml::sfml Eigen3::Eigen)
