@@ -20,12 +20,12 @@ cpp_renderer::ShapeBuilder &cpp_renderer::ShapeBuilder::addCube(Eigen::Vector3f 
     auto center = position + center_offset;
     for (size_t i = 0; i < 4; i++)
     {
-        auto rotation = Eigen::AngleAxisf(0.5 * std::numbers::pi * i, orientation.col(1));
+        auto rotation = Eigen::AngleAxisf(0.5 * std::numbers::pi * i, orientation.col(0));
         addPlane(center - rotation * center_offset, rotation * orientation);
     }
     for (size_t i = 0; i < 2; i++)
     {
-        auto rotation = Eigen::AngleAxisf(0.5 * std::numbers::pi + std::numbers::pi * i, orientation.col(0));
+        auto rotation = Eigen::AngleAxisf(0.5 * std::numbers::pi + std::numbers::pi * i, orientation.col(1));
         addPlane(center - rotation * center_offset, rotation * orientation);
     }
     return *this;

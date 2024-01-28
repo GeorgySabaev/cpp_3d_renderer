@@ -33,8 +33,10 @@ int main()
         // TODO(me): read actual files
 
         cpp_renderer::ShapeBuilder shapeBuilder;
-
-        std::vector<cpp_renderer::Triangle> triangles = shapeBuilder.addCube({0, 0, -3}, Eigen::AngleAxisf(clock.getElapsedTime().asSeconds() * std::numbers::pi, Eigen::Vector3f::UnitY()).matrix()).build();
+        auto rotation = Eigen::AngleAxisf(clock.getElapsedTime().asSeconds() * std::numbers::pi, Eigen::Vector3f::UnitY()).matrix();
+        rotation = rotation * Eigen::AngleAxisf(-atan(1 / sqrt(2)), Eigen::Vector3f::UnitX());
+        rotation = rotation * Eigen::AngleAxisf(-0.25 * std::numbers::pi, Eigen::Vector3f::UnitZ());
+        std::vector<cpp_renderer::Triangle> triangles = shapeBuilder.addCube({0, 0, -3}, rotation).build();
 
         /*
         triangles[0].points[0][0] = 1;
