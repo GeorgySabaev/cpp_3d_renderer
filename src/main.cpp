@@ -36,7 +36,7 @@ int main()
         auto rotation = Eigen::AngleAxisf(clock.getElapsedTime().asSeconds() * std::numbers::pi, Eigen::Vector3f::UnitY()).matrix();
         rotation = rotation * Eigen::AngleAxisf(-atan(1 / sqrt(2)), Eigen::Vector3f::UnitX());
         rotation = rotation * Eigen::AngleAxisf(-0.25 * std::numbers::pi, Eigen::Vector3f::UnitZ());
-        std::vector<cpp_renderer::Triangle> triangles = shapeBuilder.addCube({0, 0, -3}, rotation).build();
+        std::vector<cpp_renderer::Triangle> triangles = shapeBuilder.addCube({0, 0, -3}, rotation).addCube({-0.5, -0.5, -3}, Eigen::Matrix3f::Identity()).build();
 
         /*
         triangles[0].points[0][0] = 1;
