@@ -9,6 +9,7 @@ int main()
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
     sf::Clock clock;
+    auto renderer = cpp_renderer::Renderer();
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -81,8 +82,7 @@ int main()
         */
 
         // actual renderer call
-        auto renderer = cpp_renderer::Renderer();
-        auto frame = renderer.render(triangles, win_size.x, win_size.y, cpp_renderer::Camera(1, win_size.x, win_size.y, 1, 20));
+        auto frame = renderer.render(triangles, cpp_renderer::Camera(1, win_size.x, win_size.y, 1, 20));
 
         auto image = sf::Image();
         image.create(win_size.x, win_size.y, reinterpret_cast<const sf::Uint8 *>(frame.getData().data()));

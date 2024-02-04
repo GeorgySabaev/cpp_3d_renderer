@@ -10,6 +10,16 @@ cpp_renderer::Camera::Camera(float fov, int width, int height, float near_plane,
     calculateTransformMatrix();
 }
 
+int cpp_renderer::Camera::getWidth() const
+{
+    return width_;
+}
+
+int cpp_renderer::Camera::getHeight() const
+{
+    return height_;
+}
+
 Eigen::Vector3f cpp_renderer::Camera::transform(const Eigen::Vector3f &point) const
 {
     Eigen::Vector4f homogenous_point;

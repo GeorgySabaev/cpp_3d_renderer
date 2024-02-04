@@ -8,6 +8,9 @@ namespace cpp_renderer
     public:
         explicit Camera(float fov, int width, int height, float near_plane, float far_plane);
 
+        int getWidth() const;
+        int getHeight() const;
+
         Eigen::Vector3f transform(const Eigen::Vector3f &point) const;
 
     private:
