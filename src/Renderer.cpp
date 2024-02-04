@@ -70,7 +70,7 @@ cpp_renderer::RGBA32Image cpp_renderer::Renderer::render(const std::vector<Trian
             // TODO(me): proper color later
             uint8_t lightness = 0xff * std::pow((1 + depth_buffer_(x, y)) / 2, 3);
             // uint8_t lightness = (1 / (exp(polygons[poly_id_buffer[x][y]].GetSurfacePoint(uv_buffer[x][y]).norm() / 5))) * 0xff;
-            frame.setPixel(x, y, RGBA32Pixel{lightness, lightness, lightness, 0xFF});
+            frame.setPixel(x, y, RGBA32Color(lightness, lightness, lightness));
         }
     }
 
