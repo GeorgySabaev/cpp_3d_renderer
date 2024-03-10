@@ -1,0 +1,63 @@
+#include "Application.hpp"
+
+#include "ShapeBuilder.hpp"
+#include <numbers>
+
+namespace cpp_renderer {
+Application::Application() {
+  window.create(sf::VideoMode(800, 600), "My window");
+}
+
+void Application::Run() {
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      } else if (event.type == sf::Event::Resized) {
+        window.setView(
+            sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+      }
+    }
+    window.clear(sf::Color::Magenta);
+
+    auto win_size = window.getView().getSize();
+
+    auto triangles = buildScene();
+
+    auto frame = renderer.render(
+        triangles, cpp_renderer::Camera(1, win_size.x, win_size.y, 1, 20));
+
+    drawFrame(frame);
+    // end the current frame
+    window.display();
+  }
+}
+
+std::vector<cpp_renderer::Triangle> Application::buildScene() const {
+  cpp_renderer::ShapeBuilder shapeBuilder;
+  auto rotation =
+      Eigen::AngleAxisf(clock.getElapsedTime().asSeconds() * std::numbers::pi,
+                        Eigen::Vector3f::UnitY())
+          .matrix();
+  rotation = rotation *
+             Eigen::AngleAxisf(-atan(1 / sqrt(2)), Eigen::Vector3f::UnitX());
+  rotation = rotation * Eigen::AngleAxisf(-0.25 * std::numbers::pi,
+                                          Eigen::Vector3f::UnitZ());
+  return shapeBuilder.addCube({0, 0, -3}, rotation)
+      .addCube({-0.5, -0.5, -3}, Eigen::Matrix3f::Identity())
+      .build();
+}
+
+void Application::drawFrame(const RGBA32Image &frame) {
+  auto image = sf::Image();
+  image.create(frame.getWidth(), frame.getHeight(),
+               static_cast<const sf::Uint8 *>(frame.getData().data()));
+
+  auto texture = sf::Texture();
+  texture.loadFromImage(image);
+
+  auto sprite = sf::Sprite(texture);
+  window.draw(sprite);
+}
+} // namespace cpp_renderer
