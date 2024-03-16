@@ -23,8 +23,8 @@ RGBA32Image &Renderer::render(const std::vector<Triangle> &polygons,
 }
 
 void Renderer::setResolution(size_t width, size_t height) {
-  depth_buffer_.clear(width, height, NAN);
-  uv_buffer_.clear(width, height);
+  depth_buffer_.resize(width, height, NAN);
+  uv_buffer_.resize(width, height);
   frame.resize(width, height, {0x00, 0x00, 0x00, 0xFF});
 }
 
