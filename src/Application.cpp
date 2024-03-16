@@ -41,8 +41,7 @@ std::vector<cpp_renderer::Triangle> Application::buildScene() const {
 
 void Application::drawFrame(const RGBA32Image &frame) {
   auto image = sf::Image();
-  image.create(frame.getWidth(), frame.getHeight(),
-               static_cast<const sf::Uint8 *>(frame.getData().data()));
+  image.create(frame.getWidth(), frame.getHeight(), frame.getRawData());
 
   auto texture = sf::Texture();
   texture.loadFromImage(image);
