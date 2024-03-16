@@ -7,10 +7,11 @@ void Renderer::setResolution(unsigned int width, unsigned int height) {
   depth_buffer_.clear(width, height, NAN);
   uv_buffer_.clear(width, height);
   poly_id_buffer_.clear(width, height);
+  frame.resize(width, height, {0x00, 0x00, 0x00, 0xFF});
 }
 
-RGBA32Image Renderer::render(const std::vector<Triangle> &polygons,
-                             const Camera &camera) {
+RGBA32Image &Renderer::render(const std::vector<Triangle> &polygons,
+                              const Camera &camera) {
   auto width = camera.getWidth();
   auto height = camera.getHeight();
   setResolution(width, height);
@@ -48,9 +49,6 @@ RGBA32Image Renderer::render(const std::vector<Triangle> &polygons,
       }
     }
   }
-
-  // rendering pass
-  auto frame = RGBA32Image(width, height, {0x00, 0x00, 0x00, 0xFF});
 
   for (auto x = 0; x < width; ++x) {
     for (auto y = 0; y < height; ++y) {

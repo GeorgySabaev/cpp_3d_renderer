@@ -16,7 +16,7 @@ void Application::Run() {
 
     auto win_size = window.getView().getSize();
     auto triangles = buildScene();
-    auto frame = renderer.render(triangles, camera);
+    auto &frame = renderer.render(triangles, camera);
     drawFrame(frame);
 
     window.display();

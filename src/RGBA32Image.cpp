@@ -40,3 +40,17 @@ const uint8_t *cpp_renderer::RGBA32Image::getRawData() const {
 unsigned int cpp_renderer::RGBA32Image::getWidth() const { return width_; }
 
 unsigned int cpp_renderer::RGBA32Image::getHeight() const { return height_; }
+
+void cpp_renderer::RGBA32Image::resize(unsigned int width, unsigned int height,
+                                       RGBA32Color background_color) {
+  width_ = width;
+  height_ = height;
+  data_.resize(width * height * 4);
+
+  if (background_color != RGBA32Color(0, 0, 0, 0)) {
+    for (size_t i = 0; i < width * height; i++) {
+      std::copy(background_color.data.begin(), background_color.data.end(),
+                data_.begin() + i * 4);
+    }
+  }
+}
