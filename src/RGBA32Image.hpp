@@ -1,5 +1,6 @@
 #pragma once
 #include "RGBA32Color.hpp"
+#include "RGBA32Colors.hpp"
 #include <vector>
 
 namespace cpp_renderer {
@@ -7,14 +8,14 @@ class RGBA32Image {
 public:
   RGBA32Image() = default;
   RGBA32Image(size_t width, size_t height,
-              RGBA32Color background_color = {});
+              RGBA32Color background_color = RGBA32Colors::BLACK);
   RGBA32Color getPixel(size_t x, size_t y) const;
   void setPixel(size_t x, size_t y, RGBA32Color color);
   const uint8_t *getRawData() const;
   size_t getWidth() const;
   size_t getHeight() const;
   void resize(size_t width, size_t height,
-              RGBA32Color background_color);
+              RGBA32Color background_color = RGBA32Colors::BLACK);
 
 private:
   std::vector<uint8_t> data_;

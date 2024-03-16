@@ -7,11 +7,9 @@ cpp_renderer::RGBA32Image::RGBA32Image(size_t width, size_t height,
   height_ = height;
   data_ = std::vector<uint8_t>(width * height * 4);
 
-  if (background_color != RGBA32Color(0, 0, 0, 0)) {
-    for (size_t i = 0; i < width * height; i++) {
-      std::copy(background_color.data.begin(), background_color.data.end(),
-                data_.begin() + i * 4);
-    }
+  for (size_t i = 0; i < width * height; i++) {
+    std::copy(background_color.data.begin(), background_color.data.end(),
+              data_.begin() + i * 4);
   }
 }
 
@@ -19,9 +17,7 @@ cpp_renderer::RGBA32Color cpp_renderer::RGBA32Image::getPixel(size_t x,
                                                               size_t y) const {
   assert(x < width_);
   assert(y < height_);
-  RGBA32Color color;
-  std::copy(data_.begin() + (width_ * y + x) * 4,
-            data_.begin() + (width_ * y + x + 1) * 4, color.data.begin());
+  RGBA32Color color(data_.begin() + (width_ * y + x) * 4);
   return color;
 }
 
