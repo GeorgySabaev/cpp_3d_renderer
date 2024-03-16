@@ -1,66 +1,73 @@
 #include "DisplayUtils.hpp"
-#include <utility>
 #include <cassert>
+#include <utility>
+namespace cpp_renderer {
+cpp_renderer::Rect<int>
+cpp_renderer::DisplayUtils::getBounds(const Triangle &polygon) {
+  float min_x;
+  float max_x;
+  float min_y;
+  float max_y;
+  min_x = max_x = polygon.points[0][0];
+  min_y = max_y = polygon.points[0][1];
+  for (auto point : polygon.points) {
+    min_x = std::min(min_x, point[0]);
+    min_y = std::min(min_y, point[1]);
+    max_x = std::max(max_x, point[0]);
+    max_y = std::max(max_y, point[1]);
+  }
+  Rect<int> bounds;
+  bounds.left = floorf(min_x);
+  bounds.right = ceilf(max_x);
+  bounds.up = floorf(min_y);
+  bounds.down = ceilf(max_y);
 
-cpp_renderer::IntRect cpp_renderer::DisplayUtils::getBounds(const Triangle &polygon)
-{
-    float min_x;
-    float max_x;
-    float min_y;
-    float max_y;
-    min_x = max_x = polygon.points[0][0];
-    min_y = max_y = polygon.points[0][1];
-    for (auto point : polygon.points)
-    {
-        min_x = std::min(min_x, point[0]);
-        min_y = std::min(min_y, point[1]);
-        max_x = std::max(max_x, point[0]);
-        max_y = std::max(max_y, point[1]);
-    }
-    IntRect bounds;
-    bounds.left = floorf(min_x);
-    bounds.right = ceilf(max_x);
-    bounds.up = floorf(min_y);
-    bounds.down = ceilf(max_y);
-
-    return bounds;
+  return bounds;
 }
 
-cpp_renderer::IntRect cpp_renderer::DisplayUtils::clipToScreen(cpp_renderer::IntRect bounds, int width, int height)
-{
-    bounds.left = std::max(bounds.left, 0);
-    bounds.right = std::min(bounds.right, width);
-    bounds.up = std::max(bounds.up, 0);
-    bounds.down = std::min(bounds.down, height);
-
-    return bounds;
+cpp_renderer::Rect<size_t>
+cpp_renderer::DisplayUtils::clipToScreen(cpp_renderer::Rect<int> bounds,
+                                         size_t width, size_t height) {
+  Rect<size_t> new_bounds;
+  new_bounds.left = std::max(bounds.left, 0);
+  new_bounds.up = std::max(bounds.up, 0);
+  if (new_bounds.right < 0) {
+    new_bounds.right = 0;
+  } else {
+    new_bounds.right = std::min(static_cast<size_t>(bounds.right), width);
+  }
+  if (new_bounds.down < 0) {
+    new_bounds.down = 0;
+  } else {
+    new_bounds.down = std::min(static_cast<size_t>(bounds.down), height);
+  }
+  return new_bounds;
 }
 
-bool cpp_renderer::DisplayUtils::checkIfVisible(Triangle triangle)
-{
-    auto pivot = triangle.points[0].head<2>();
-    auto b = triangle.points[1].head<2>() - pivot;
-    auto c = triangle.points[2].head<2>() - pivot;
-    auto l_perpendicular = Eigen::Vector2f(-c.y(), c.x());
+bool cpp_renderer::DisplayUtils::checkIfVisible(Triangle triangle) {
+  auto pivot = triangle.points[0].head<2>();
+  auto b = triangle.points[1].head<2>() - pivot;
+  auto c = triangle.points[2].head<2>() - pivot;
+  auto l_perpendicular = Eigen::Vector2f(-c.y(), c.x());
 
-    return b.dot(l_perpendicular) > 0;
+  return b.dot(l_perpendicular) > 0;
 }
 
-std::optional<Eigen::Vector2f> cpp_renderer::DisplayUtils::getUV(unsigned int x, unsigned int y, Triangle triangle)
-{
-    assert(checkIfVisible(triangle));
+std::optional<Eigen::Vector2f>
+cpp_renderer::DisplayUtils::getUV(size_t x, size_t y, Triangle triangle) {
+  assert(checkIfVisible(triangle));
 
-    auto pivot = triangle.points[0].head<2>();
-    Eigen::Matrix2f uv_space;
-    uv_space.col(0) = triangle.points[1].head<2>() - pivot;
-    uv_space.col(1) = triangle.points[2].head<2>() - pivot;
-    auto point = (Eigen::Vector2f(x, y) - pivot).eval();
+  auto pivot = triangle.points[0].head<2>();
+  Eigen::Matrix2f uv_space;
+  uv_space.col(0) = triangle.points[1].head<2>() - pivot;
+  uv_space.col(1) = triangle.points[2].head<2>() - pivot;
+  auto point = (Eigen::Vector2f(x, y) - pivot).eval();
 
-    auto uv = uv_space.colPivHouseholderQr().solve(point);
-    if (uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1)
-    {
-        return uv;
-    }
+  auto uv = uv_space.colPivHouseholderQr().solve(point);
+  if (uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1) {
+    return uv;
+  }
 
-    return std::nullopt;
+  return std::nullopt;
 }
+} // namespace cpp_renderer

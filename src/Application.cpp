@@ -60,7 +60,7 @@ void Application::handleEvents() {
   }
 }
 
-void Application::resizeWindow(unsigned int width, unsigned int height) {
+void Application::resizeWindow(size_t width, size_t height) {
   window.setView(sf::View(sf::FloatRect(0, 0, width, height)));
   camera.resizeScreen(width, height);
 }

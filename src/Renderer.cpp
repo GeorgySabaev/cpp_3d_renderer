@@ -22,7 +22,7 @@ RGBA32Image &Renderer::render(const std::vector<Triangle> &polygons,
   return frame;
 }
 
-void Renderer::setResolution(unsigned int width, unsigned int height) {
+void Renderer::setResolution(size_t width, size_t height) {
   depth_buffer_.clear(width, height, NAN);
   uv_buffer_.clear(width, height);
   frame.resize(width, height, {0x00, 0x00, 0x00, 0xFF});
@@ -71,7 +71,7 @@ void Renderer::cachePolygonGeometry(const Triangle &polygon) {
   }
 }
 
-bool Renderer::isPixelVoid(unsigned int x, unsigned int y) {
+bool Renderer::isPixelVoid(size_t x, size_t y) {
   return std::isnan(depth_buffer_(x, y));
 }
 

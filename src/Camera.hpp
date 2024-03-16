@@ -4,13 +4,13 @@
 namespace cpp_renderer {
 class Camera {
 public:
-  explicit Camera(float fov, int width, int height, float near_plane,
+  explicit Camera(float fov, size_t width, size_t height, float near_plane,
                   float far_plane);
 
   int getWidth() const;
   int getHeight() const;
 
-  void resizeScreen(unsigned int width, unsigned int height);
+  void resizeScreen(size_t width, size_t height);
 
   Eigen::Vector3f transform(const Eigen::Vector3f &point) const;
 

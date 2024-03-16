@@ -6,19 +6,19 @@ namespace cpp_renderer {
 class RGBA32Image {
 public:
   RGBA32Image() = default;
-  RGBA32Image(unsigned int width, unsigned int height,
+  RGBA32Image(size_t width, size_t height,
               RGBA32Color background_color = {});
-  RGBA32Color getPixel(unsigned int x, unsigned int y) const;
-  void setPixel(unsigned int x, unsigned int y, RGBA32Color color);
+  RGBA32Color getPixel(size_t x, size_t y) const;
+  void setPixel(size_t x, size_t y, RGBA32Color color);
   const uint8_t *getRawData() const;
-  unsigned int getWidth() const;
-  unsigned int getHeight() const;
-  void resize(unsigned int width, unsigned int height,
+  size_t getWidth() const;
+  size_t getHeight() const;
+  void resize(size_t width, size_t height,
               RGBA32Color background_color);
 
 private:
   std::vector<uint8_t> data_;
-  unsigned int width_;
-  unsigned int height_;
+  size_t width_;
+  size_t height_;
 };
 } // namespace cpp_renderer

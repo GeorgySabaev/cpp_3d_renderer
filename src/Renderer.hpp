@@ -13,11 +13,11 @@ public:
                       const Camera &camera);
 
 protected:
-  void setResolution(unsigned int width, unsigned int height);
+  void setResolution(size_t width, size_t height);
   void doGeometryPass(const std::vector<Triangle> &projected_polygons);
   void doRenderingPass();
   void cachePolygonGeometry(const Triangle &polygon);
-  bool isPixelVoid(unsigned int x, unsigned int y);
+  bool isPixelVoid(size_t x, size_t y);
 
   RGBA32Image frame;
   Buffer2d<float> depth_buffer_;

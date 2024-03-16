@@ -7,8 +7,8 @@
 namespace cpp_renderer {
 class Application {
 public:
-  static constexpr unsigned int DEFAULT_WIDTH = 800;
-  static constexpr unsigned int DEFAULT_HEIGHT = 600;
+  static constexpr size_t DEFAULT_WIDTH = 800;
+  static constexpr size_t DEFAULT_HEIGHT = 600;
 
   Application();
 
@@ -23,6 +23,6 @@ protected:
   std::vector<cpp_renderer::Triangle> buildScene() const;
   void drawFrame(const RGBA32Image &frame);
   void handleEvents();
-  void resizeWindow(unsigned int width, unsigned int height);
+  void resizeWindow(size_t width, size_t height);
 };
 } // namespace cpp_renderer

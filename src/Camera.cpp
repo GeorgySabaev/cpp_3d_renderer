@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-cpp_renderer::Camera::Camera(float fov, int width, int height, float near_plane,
+cpp_renderer::Camera::Camera(float fov, size_t width, size_t height, float near_plane,
                              float far_plane) {
   width_ = width;
   height_ = height;
@@ -14,8 +14,8 @@ int cpp_renderer::Camera::getWidth() const { return width_; }
 
 int cpp_renderer::Camera::getHeight() const { return height_; }
 
-void cpp_renderer::Camera::resizeScreen(unsigned int width,
-                                        unsigned int height) {
+void cpp_renderer::Camera::resizeScreen(size_t width,
+                                        size_t height) {
   width_ = width;
   height_ = height;
   calculateTransformMatrix();
