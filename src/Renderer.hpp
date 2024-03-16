@@ -15,8 +15,6 @@ namespace cpp_renderer
     private:
         void setResolution(unsigned int width, unsigned int height);
 
-        unsigned int width_;
-        unsigned int height_;
         Buffer2d<float> depth_buffer_;
         Buffer2d<Eigen::Vector2f> uv_buffer_;
         Buffer2d<size_t> poly_id_buffer_;
