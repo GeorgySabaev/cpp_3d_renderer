@@ -10,26 +10,16 @@ Application::Application() {
 
 void Application::Run() {
   while (window.isOpen()) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
-        window.close();
-      } else if (event.type == sf::Event::Resized) {
-        window.setView(
-            sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
-      }
-    }
+    handleEvents();
+
     window.clear(sf::Color::Magenta);
 
     auto win_size = window.getView().getSize();
-
     auto triangles = buildScene();
-
     auto frame = renderer.render(
         triangles, cpp_renderer::Camera(1, win_size.x, win_size.y, 1, 20));
-
     drawFrame(frame);
-    // end the current frame
+
     window.display();
   }
 }
@@ -59,5 +49,20 @@ void Application::drawFrame(const RGBA32Image &frame) {
 
   auto sprite = sf::Sprite(texture);
   window.draw(sprite);
+}
+
+void Application::handleEvents() {
+  sf::Event event;
+  while (window.pollEvent(event)) {
+    if (event.type == sf::Event::Closed) {
+      window.close();
+    } else if (event.type == sf::Event::Resized) {
+      resizeWindow(event.size.width, event.size.height);
+    }
+  }
+}
+
+void Application::resizeWindow(unsigned int width, unsigned int height) {
+  window.setView(sf::View(sf::FloatRect(0, 0, width, height)));
 }
 } // namespace cpp_renderer
