@@ -4,9 +4,9 @@
 #include <numbers>
 
 namespace cpp_renderer {
-Application::Application() {
-  window.create(sf::VideoMode(800, 600), "My window");
-}
+Application::Application()
+    : window(sf::VideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT), "My window"),
+      camera(1, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 20) {}
 
 void Application::Run() {
   while (window.isOpen()) {
@@ -16,8 +16,7 @@ void Application::Run() {
 
     auto win_size = window.getView().getSize();
     auto triangles = buildScene();
-    auto frame = renderer.render(
-        triangles, cpp_renderer::Camera(1, win_size.x, win_size.y, 1, 20));
+    auto frame = renderer.render(triangles, camera);
     drawFrame(frame);
 
     window.display();
@@ -63,5 +62,6 @@ void Application::handleEvents() {
 
 void Application::resizeWindow(unsigned int width, unsigned int height) {
   window.setView(sf::View(sf::FloatRect(0, 0, width, height)));
+  camera.resizeScreen(width, height);
 }
 } // namespace cpp_renderer

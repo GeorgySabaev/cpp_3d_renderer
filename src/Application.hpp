@@ -7,6 +7,9 @@
 namespace cpp_renderer {
 class Application {
 public:
+  static constexpr unsigned int DEFAULT_WIDTH = 800;
+  static constexpr unsigned int DEFAULT_HEIGHT = 600;
+
   Application();
 
   void Run();
@@ -14,6 +17,7 @@ public:
 protected:
   sf::Clock clock;
   cpp_renderer::Renderer renderer;
+  cpp_renderer::Camera camera;
   sf::RenderWindow window;
 
   std::vector<cpp_renderer::Triangle> buildScene() const;

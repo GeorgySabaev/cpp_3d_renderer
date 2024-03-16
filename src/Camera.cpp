@@ -1,45 +1,43 @@
 #include "Camera.hpp"
 
-cpp_renderer::Camera::Camera(float fov, int width, int height, float near_plane, float far_plane)
-{
-    width_ = width;
-    height_ = height;
-    perspective_coef_ = tan(fov);
-    near_plane_ = near_plane;
-    far_plane_ = far_plane;
-    calculateTransformMatrix();
+cpp_renderer::Camera::Camera(float fov, int width, int height, float near_plane,
+                             float far_plane) {
+  width_ = width;
+  height_ = height;
+  perspective_coef_ = tan(fov);
+  near_plane_ = near_plane;
+  far_plane_ = far_plane;
+  calculateTransformMatrix();
 }
 
-int cpp_renderer::Camera::getWidth() const
-{
-    return width_;
+int cpp_renderer::Camera::getWidth() const { return width_; }
+
+int cpp_renderer::Camera::getHeight() const { return height_; }
+
+void cpp_renderer::Camera::resizeScreen(unsigned int width,
+                                        unsigned int height) {
+  width_ = width;
+  height_ = height;
+  calculateTransformMatrix();
 }
 
-int cpp_renderer::Camera::getHeight() const
-{
-    return height_;
+Eigen::Vector3f
+cpp_renderer::Camera::transform(const Eigen::Vector3f &point) const {
+  Eigen::Vector4f homogenous_point;
+  homogenous_point << point, 1;
+  homogenous_point = transform_matrix_ * homogenous_point;
+  return homogenous_point.head<3>() / homogenous_point.w();
 }
 
-Eigen::Vector3f cpp_renderer::Camera::transform(const Eigen::Vector3f &point) const
-{
-    Eigen::Vector4f homogenous_point;
-    homogenous_point << point, 1;
-    homogenous_point = transform_matrix_ * homogenous_point;
-    return homogenous_point.head<3>() / homogenous_point.w();
-}
+void cpp_renderer::Camera::calculateTransformMatrix() {
+  Eigen::Matrix4f projection_matrix, screen_matrix;
+  projection_matrix << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+      -(far_plane_ / (far_plane_ - near_plane_)),
+      -(far_plane_ * near_plane_ / (far_plane_ - near_plane_)), 0, 0,
+      -perspective_coef_, 0;
 
-void cpp_renderer::Camera::calculateTransformMatrix()
-{
-    Eigen::Matrix4f projection_matrix, screen_matrix;
-    projection_matrix << 1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, -(far_plane_ / (far_plane_ - near_plane_)), -(far_plane_ * near_plane_ / (far_plane_ - near_plane_)),
-        0, 0, -perspective_coef_, 0;
+  screen_matrix << height_, 0, 0, width_ / 2, 0, -height_, 0, height_ / 2, 0, 0,
+      1, 0, 0, 0, 0, 1;
 
-    screen_matrix << height_, 0, 0, width_ / 2,
-        0, -height_, 0, height_ / 2,
-        0, 0, 1, 0,
-        0, 0, 0, 1;
-
-    transform_matrix_ = screen_matrix * projection_matrix;
+  transform_matrix_ = screen_matrix * projection_matrix;
 }
