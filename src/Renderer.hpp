@@ -8,6 +8,7 @@
 namespace cpp_renderer {
 class Renderer {
 public:
+  using Vector2 = Eigen::Vector2f;
   RGBA32Image &render(const std::vector<Triangle> &polygons,
                       const Camera &camera);
 
@@ -20,6 +21,6 @@ protected:
 
   RGBA32Image frame;
   Buffer2d<float> depth_buffer_;
-  Buffer2d<Eigen::Vector2f> uv_buffer_;
+  Buffer2d<Vector2> uv_buffer_;
 };
 } // namespace cpp_renderer

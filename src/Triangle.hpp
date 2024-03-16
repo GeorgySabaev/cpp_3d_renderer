@@ -2,13 +2,13 @@
 #include <Eigen/Dense>
 #include <array>
 
-namespace cpp_renderer
-{
-    struct Triangle
-    {
-    public:
-        Eigen::Vector3f GetSurfacePoint(const Eigen::Vector2f &uv) const;
+namespace cpp_renderer {
+struct Triangle {
+public:
+  using Vector2 = Eigen::Vector2f;
+  using Vector3 = Eigen::Vector3f;
+  Vector3 GetSurfacePoint(const Vector2 &uv) const;
 
-        std::array<Eigen::Vector3f, 3> points;
-    };
-}
+  std::array<Vector3, 3> points;
+};
+} // namespace cpp_renderer
