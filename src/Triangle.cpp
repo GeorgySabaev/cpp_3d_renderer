@@ -9,7 +9,7 @@ const Triangle::Vector3 &Triangle::operator[](int point_idx) const {
   return points[point_idx];
 }
 
-Triangle::Vector3 Triangle::GetSurfacePoint(const Vector2 &uv) const {
+Triangle::Vector3 Triangle::getPointByUv(const Vector2 &uv) const {
   auto pivot = points[0];
   auto uv_basis = getUVBasis();
 

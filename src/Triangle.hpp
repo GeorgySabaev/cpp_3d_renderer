@@ -12,7 +12,7 @@ struct Triangle {
 
   Vector3 &operator[](int point_idx);
   const Vector3 &operator[](int point_idx) const;
-  Vector3 GetSurfacePoint(const Vector2 &uv) const;
+  Vector3 getPointByUv(const Vector2 &uv) const;
   std::optional<Vector2> getUVCoordinates(size_t x, size_t y) const;
   Matrix2x2 getUVBasisScreenSpace() const;
   Matrix3x2 getUVBasis() const;

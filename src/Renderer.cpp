@@ -64,7 +64,7 @@ void Renderer::cachePolygonGeometry(const Triangle &polygon) {
       if (!uv.has_value()) {
         continue;
       }
-      auto depth = polygon.GetSurfacePoint(uv.value()).z();
+      auto depth = polygon.getPointByUv(uv.value()).z();
       if (depth_buffer_(x, y) <= depth) {
         continue;
       }
