@@ -14,7 +14,7 @@ public:
   Eigen::Vector3f transform(const Eigen::Vector3f &point) const;
 
 private:
-  void calculateTransformMatrix();
+  Eigen::Matrix4f calculateTransformMatrix();
   int width_;
   int height_;
   float near_plane_;

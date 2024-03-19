@@ -1,24 +1,19 @@
 #include "Camera.hpp"
 
-cpp_renderer::Camera::Camera(float fov, size_t width, size_t height, float near_plane,
-                             float far_plane) {
-  width_ = width;
-  height_ = height;
-  perspective_coef_ = tan(fov);
-  near_plane_ = near_plane;
-  far_plane_ = far_plane;
-  calculateTransformMatrix();
-}
+cpp_renderer::Camera::Camera(float fov, size_t width, size_t height,
+                             float near_plane, float far_plane)
+    : width_(width), height_(height), perspective_coef_(tan(fov)),
+      near_plane_(near_plane), far_plane_(far_plane),
+      transform_matrix_(calculateTransformMatrix()) {}
 
 int cpp_renderer::Camera::getWidth() const { return width_; }
 
 int cpp_renderer::Camera::getHeight() const { return height_; }
 
-void cpp_renderer::Camera::resizeScreen(size_t width,
-                                        size_t height) {
+void cpp_renderer::Camera::resizeScreen(size_t width, size_t height) {
   width_ = width;
   height_ = height;
-  calculateTransformMatrix();
+  transform_matrix_ = calculateTransformMatrix();
 }
 
 Eigen::Vector3f
@@ -29,7 +24,7 @@ cpp_renderer::Camera::transform(const Eigen::Vector3f &point) const {
   return homogenous_point.head<3>() / homogenous_point.w();
 }
 
-void cpp_renderer::Camera::calculateTransformMatrix() {
+Eigen::Matrix4f cpp_renderer::Camera::calculateTransformMatrix() {
   Eigen::Matrix4f projection_matrix, screen_matrix;
   projection_matrix << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
       -(far_plane_ / (far_plane_ - near_plane_)),
@@ -39,5 +34,5 @@ void cpp_renderer::Camera::calculateTransformMatrix() {
   screen_matrix << height_, 0, 0, width_ / 2, 0, -height_, 0, height_ / 2, 0, 0,
       1, 0, 0, 0, 0, 1;
 
-  transform_matrix_ = screen_matrix * projection_matrix;
+  return screen_matrix * projection_matrix;
 }
