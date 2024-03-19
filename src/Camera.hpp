@@ -4,8 +4,8 @@
 namespace cpp_renderer {
 class Camera {
 public:
-  explicit Camera(float fov, size_t width, size_t height, float near_plane,
-                  float far_plane);
+  Camera(float fov, size_t width, size_t height, float near_plane,
+         float far_plane);
 
   int getWidth() const;
   int getHeight() const;
