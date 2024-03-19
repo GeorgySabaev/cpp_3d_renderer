@@ -9,4 +9,20 @@ Triangle::Vector3 Triangle::GetSurfacePoint(const Vector2 &uv) const {
 
   return (uv_space * uv) + pivot;
 }
+
+std::optional<Triangle::Vector2> Triangle::getUV(size_t x, size_t y) const {
+
+  auto pivot = this->points[0].head<2>();
+  Eigen::Matrix2f uv_space;
+  uv_space.col(0) = this->points[1].head<2>() - pivot;
+  uv_space.col(1) = this->points[2].head<2>() - pivot;
+  auto point = (Eigen::Vector2f(x, y) - pivot).eval();
+
+  auto uv = uv_space.colPivHouseholderQr().solve(point);
+  if (uv.x() >= 0 && uv.y() >= 0 && uv.x() + uv.y() <= 1) {
+    return uv;
+  }
+
+  return std::nullopt;
+}
 } // namespace cpp_renderer

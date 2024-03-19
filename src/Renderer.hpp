@@ -2,6 +2,7 @@
 #include "Buffer2d.hpp"
 #include "Camera.hpp"
 #include "RGBA32Image.hpp"
+#include "Rect.hpp"
 #include "Triangle.hpp"
 #include <Eigen/Dense>
 
@@ -18,6 +19,10 @@ protected:
   void doRenderingPass();
   void cachePolygonGeometry(const Triangle &polygon);
   bool isPixelVoid(size_t x, size_t y);
+  bool checkIfVisible(const Triangle &triangle) const;
+  Rect<int> getScreenBounds(const Triangle &screen_space_polygon) const;
+  Rect<size_t> clipToScreen(cpp_renderer::Rect<int> bounds, size_t width,
+                            size_t height) const;
 
   RGBA32Image frame;
   Buffer2d<float> depth_buffer_;
