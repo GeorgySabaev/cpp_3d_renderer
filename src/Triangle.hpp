@@ -7,13 +7,15 @@ namespace cpp_renderer {
 struct Triangle {
   using Vector2 = Eigen::Vector2f;
   using Vector3 = Eigen::Vector3f;
-  using Matrix2 = Eigen::Matrix2f;
+  using Matrix2x2 = Eigen::Matrix2f;
+  using Matrix3x2 = Eigen::Matrix<float, 3, 2>;
 
   Vector3 &operator[](int point_idx);
   const Vector3 &operator[](int point_idx) const;
   Vector3 GetSurfacePoint(const Vector2 &uv) const;
   std::optional<Vector2> getUVCoordinates(size_t x, size_t y) const;
-  Matrix2 getUVBasis() const;
+  Matrix2x2 getUVBasisScreenSpace() const;
+  Matrix3x2 getUVBasis() const;
 
   std::array<Vector3, 3> points;
 };
