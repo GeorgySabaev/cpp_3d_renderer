@@ -2,7 +2,7 @@
 #include "Triangle.hpp"
 
 namespace cpp_renderer {
-struct ShapeBuilder {
+class ShapeBuilder {
 public:
   using Vector3 = Eigen::Vector3f;
   using Matrix3x3 = Eigen::Matrix3f;
