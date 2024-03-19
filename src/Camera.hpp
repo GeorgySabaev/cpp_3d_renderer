@@ -11,7 +11,6 @@ public:
   int getHeight() const;
 
   void resizeScreen(size_t width, size_t height);
-
   Eigen::Vector3f transform(const Eigen::Vector3f &point) const;
 
 private:

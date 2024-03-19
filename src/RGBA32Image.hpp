@@ -9,6 +9,7 @@ public:
   RGBA32Image() = default;
   RGBA32Image(size_t width, size_t height,
               RGBA32Color background_color = RGBA32Colors::BLACK);
+
   RGBA32Color getPixel(size_t x, size_t y) const;
   void setPixel(size_t x, size_t y, RGBA32Color color);
   const uint8_t *getRawData() const;

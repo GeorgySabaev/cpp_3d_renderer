@@ -18,6 +18,7 @@ public:
     data_.resize(width * height, value);
     width_ = width;
   }
+
   void resize() { resize(width_, getHeight()); }
 
 private:
