@@ -56,7 +56,7 @@ void Renderer::cachePolygonGeometry(const Triangle &polygon) {
 
   for (auto x = bounds.left; x < bounds.right; ++x) {
     for (auto y = bounds.up; y < bounds.down; ++y) {
-      auto uv = polygon.getUV(x, y);
+      auto uv = polygon.getUVCoordinates(x, y);
       if (!uv.has_value()) {
         continue;
       }
