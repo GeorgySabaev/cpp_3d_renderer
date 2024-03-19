@@ -14,16 +14,17 @@ ShapeBuilder &ShapeBuilder::addPlane(Vector3 position, Matrix3x3 orientation) {
 }
 
 ShapeBuilder &ShapeBuilder::addCube(Vector3 position, Matrix3x3 orientation) {
-  auto center_offset = orientation.rowwise().sum() / 2;
+  using Rotation = Eigen::AngleAxisf;
+  auto &pi = std::numbers::pi;
+
+  auto center_offset = orientation.rowwise().sum() / 2.;
   auto center = position + center_offset;
   for (size_t i = 0; i < 4; i++) {
-    auto rotation =
-        Eigen::AngleAxisf(0.5 * std::numbers::pi * i, orientation.col(0));
+    auto rotation = Rotation(0.5 * pi * i, orientation.col(0));
     addPlane(center - rotation * center_offset, rotation * orientation);
   }
   for (size_t i = 0; i < 2; i++) {
-    auto rotation = Eigen::AngleAxisf(
-        0.5 * std::numbers::pi + std::numbers::pi * i, orientation.col(1));
+    auto rotation = Rotation(0.5 * pi + pi * i, orientation.col(1));
     addPlane(center - rotation * center_offset, rotation * orientation);
   }
   return *this;
