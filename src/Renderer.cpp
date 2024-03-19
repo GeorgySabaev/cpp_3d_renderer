@@ -75,9 +75,9 @@ bool Renderer::isPixelVoid(size_t x, size_t y) {
 }
 
 bool Renderer::checkIfVisible(const Triangle &triangle) const {
-  auto pivot = triangle.points[0].head<2>();
-  auto b = triangle.points[1].head<2>() - pivot;
-  auto c = triangle.points[2].head<2>() - pivot;
+  auto pivot = triangle[0].head<2>();
+  auto b = triangle[1].head<2>() - pivot;
+  auto c = triangle[2].head<2>() - pivot;
   auto l_perpendicular = Eigen::Vector2f(-c.y(), c.x());
 
   return b.dot(l_perpendicular) > 0;
@@ -89,8 +89,8 @@ Renderer::getScreenBounds(const Triangle &screen_space_polygon) const {
   float max_x;
   float min_y;
   float max_y;
-  min_x = max_x = screen_space_polygon.points[0][0];
-  min_y = max_y = screen_space_polygon.points[0][1];
+  min_x = max_x = screen_space_polygon[0][0];
+  min_y = max_y = screen_space_polygon[0][1];
   for (auto point : screen_space_polygon.points) {
     min_x = std::min(min_x, point[0]);
     min_y = std::min(min_y, point[1]);
