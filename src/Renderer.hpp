@@ -17,6 +17,7 @@ protected:
   void setResolution(size_t width, size_t height);
   void doGeometryPass(const std::vector<Triangle> &projected_polygons);
   void doRenderingPass();
+  void renderPixel(size_t x, size_t y);
   void cachePolygonGeometry(const Triangle &polygon);
   bool isPixelVoid(size_t x, size_t y);
   bool checkIfVisible(const Triangle &triangle) const;

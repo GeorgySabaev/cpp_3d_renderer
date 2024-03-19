@@ -40,14 +40,18 @@ void Renderer::doGeometryPass(const std::vector<Triangle> &projected_polygons) {
 void Renderer::doRenderingPass() {
   for (auto x = 0; x < frame.getWidth(); ++x) {
     for (auto y = 0; y < frame.getHeight(); ++y) {
-      if (isPixelVoid(x, y)) { // no object at (x, y)
-        continue;
-      }
-      // TODO(me): proper color later
-      uint8_t lightness = 0xff * std::pow((1 + depth_buffer_(x, y)) / 2, 3);
-      frame.setPixel(x, y, RGBA32Color(lightness, lightness, lightness));
+      renderPixel(x, y);
     }
   }
+}
+
+void Renderer::renderPixel(size_t x, size_t y) {
+  if (isPixelVoid(x, y)) { // no object at (x, y)
+    return;
+  }
+  // TODO(me): proper color later
+  uint8_t lightness = 0xff * std::pow((1 + depth_buffer_(x, y)) / 2, 3);
+  frame.setPixel(x, y, RGBA32Color(lightness, lightness, lightness));
 }
 
 void Renderer::cachePolygonGeometry(const Triangle &polygon) {
