@@ -5,7 +5,6 @@
 
 namespace cpp_renderer {
 struct Triangle {
-public:
   using Vector2 = Eigen::Vector2f;
   using Vector3 = Eigen::Vector3f;
   using Matrix2 = Eigen::Matrix2f;
