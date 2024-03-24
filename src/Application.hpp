@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.hpp"
+#include "Model.hpp"
 #include "Renderer.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -19,6 +20,7 @@ protected:
   cpp_renderer::Renderer renderer;
   cpp_renderer::Camera camera;
   sf::RenderWindow window;
+  cpp_renderer::Model model;
 
   std::vector<cpp_renderer::Triangle> buildScene() const;
   void drawFrame(const RGBA32Image &frame);

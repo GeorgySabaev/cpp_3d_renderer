@@ -1,12 +1,19 @@
 #include "Application.hpp"
-
 #include "ShapeBuilder.hpp"
+#include <iostream>
 #include <numbers>
 
 namespace cpp_renderer {
 Application::Application()
     : window(sf::VideoMode(DEFAULT_WIDTH, DEFAULT_HEIGHT), "My window"),
-      camera(1, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 20) {}
+      camera(1, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1, 20), model("./teapot.obj") {
+  for (auto &triangle : model.polygons) {
+    for (auto &point : triangle.points) {
+      point.z() -= 5;
+      point.y() -= 1;
+    }
+  }
+}
 
 void Application::Run() {
   while (window.isOpen()) {
@@ -15,7 +22,7 @@ void Application::Run() {
     window.clear(sf::Color::Magenta);
 
     auto win_size = window.getView().getSize();
-    auto triangles = buildScene();
+    auto &triangles = model.polygons; // buildScene();
     auto &frame = renderer.render(triangles, camera);
     drawFrame(frame);
 
